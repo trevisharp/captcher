@@ -6,16 +6,16 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-public static class Cracker
+public class Cracker : ICracker
 {
-    static Process chrome;
-    static Form console;
-    static RichTextBox rtb;
+    Process chrome;
+    Form console;
+    RichTextBox rtb;
 
     /// <summary>
     /// Botão esquerdo do cursor é pressionado
     /// </summary>
-    public static void MouseLeftDown()
+    public void MouseLeftDown()
     {
         const int MOUSEEVENTF_LEFTDOWN = 0x02;
 
@@ -27,7 +27,7 @@ public static class Cracker
     /// <summary>
     /// Botão esquerdo do cursor é liberado
     /// </summary>
-    public static void MouseLeftUp()
+    public void MouseLeftUp()
     {
         const int MOUSEEVENTF_LEFTUP = 0x04;
 
@@ -39,7 +39,7 @@ public static class Cracker
     /// <summary>
     /// Botão direito do cursor é pressionado
     /// </summary>
-    public static void MouseRightDown()
+    public void MouseRightDown()
     {
         const int MOUSEEVENTF_RIGHTDOWN = 0x08;
 
@@ -51,7 +51,7 @@ public static class Cracker
     /// <summary>
     /// Botão direito do cursor é liberado
     /// </summary>
-    public static void MouseRightUp()
+    public void MouseRightUp()
     {
         const int MOUSEEVENTF_RIGHTUP = 0x10;
 
@@ -63,7 +63,7 @@ public static class Cracker
     /// <summary>
     /// Inicializa a aplicação
     /// </summary>
-    public static void Init(Action impl)
+    public void Init(Action impl)
     {
         Thread.CurrentThread.SetApartmentState(ApartmentState.Unknown);
         Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
@@ -110,37 +110,37 @@ public static class Cracker
     /// <summary>
     /// Print no console
     /// </summary>
-    public static void Print(object text)
+    public void Print(object text)
         => rtb.Text += text.ToString() + "\n";
 
     /// <summary>
     /// Espere um tempo
     /// </summary>
-    public static void Wait(int milli = 50)
+    public void Wait(int milli = 50)
         => Thread.Sleep(milli);
 
     /// <summary>
     /// Mova o cursor para
     /// </summary>
-    public static void MoveTo(int x, int y)
+    public void MoveTo(int x, int y)
         => Cursor.Position = new Point(x, y);
 
     /// <summary>
     /// Pegue a posição do cursor
     /// </summary>
-    public static (int x, int y) GetPosition()
+    public (int x, int y) GetPosition()
         => (Cursor.Position.X, Cursor.Position.Y);
 
     /// <summary>
     /// Copie algo para a clipboard
     /// </summary>
-    public static void Copy(string text)
+    public void Copy(string text)
         => Clipboard.SetText(text);
 
     /// <summary>
     /// Cole algo da clipboard
     /// </summary>
-    public static void Paste()
+    public void Paste()
     {
         var text = Clipboard.GetText();
         Write(text);
@@ -149,7 +149,7 @@ public static class Cracker
     /// <summary>
     /// Digite algo com o teclado
     /// </summary>
-    public static void Write(string text)
+    public void Write(string text)
     {
         SetForegroundWindow(chrome.MainWindowHandle);
         SendKeys.SendWait(text);
@@ -158,10 +158,10 @@ public static class Cracker
     /// <summary>
     /// Encerre a aplicação imediatamente
     /// </summary>
-    public static void Exit()
+    public void Exit()
         => console.Close();
 
-    static Process getChrome()
+    Process getChrome()
     {
         var processes = Process.GetProcessesByName("chrome");
         var chrome = processes.FirstOrDefault();
@@ -170,10 +170,10 @@ public static class Cracker
     }
 
     [DllImport("user32.dll")]
-    static extern int SetForegroundWindow(IntPtr hWnd);
+    extern static int SetForegroundWindow(IntPtr hWnd);
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-    static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
+    extern static void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
 
 
 }

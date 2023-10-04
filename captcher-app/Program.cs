@@ -11,9 +11,13 @@ var file = args.Length == 0 || !File.Exists(args[0]) ?
       defaultJsons[Random.Shared.Next(2)] : args[0];
 List<UserData> data = UserData.Read(file);
 
+// add code here
 
-
-
+// deafult implementation example
+// defeat instaclick bot
+if (data.Count < 5)
+    isCracker();
+else isUser();
 
 void isCracker()
     => Console.WriteLine("Cracker");

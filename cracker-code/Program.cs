@@ -1,15 +1,35 @@
-using static Cracker;
+ICracker cracker = 
+    args.Length > 0 && args[0] == "fake" ?
+    new FakeCracker() : new Cracker();
 
-Init(() =>
+cracker.Init(() =>
 {
-    MoveTo(0, 0);
-    var pos = GetPosition();
+    // Add code here
+    // Example of a dumb bot
+    cracker.MoveTo(0, 0);
+    var pos = cracker.GetPosition();
 
-    while (pos.x < 500 && pos.y < 500)
+    while (pos.x < 920 && pos.y < 680)
     {
-        Print(pos);
-        Wait(100);
-        MoveTo(pos.x + 10, pos.y + 10);
-        pos = GetPosition();
+        cracker.Print(pos);
+        cracker.Wait(100);
+        cracker.MoveTo(pos.x + 10, pos.y + 10);
+        pos = cracker.GetPosition();
     }
+
+    while (pos.x < 920)
+    {
+        cracker.Print(pos);
+        cracker.Wait(100);
+        cracker.MoveTo(pos.x + 10, pos.y);
+        pos = cracker.GetPosition();
+    }
+
+    cracker.MouseLeftDown();
+    cracker.Wait(50);
+    cracker.MouseLeftUp();
+
+    // Final version of all program may
+    // contains exit function
+    cracker.Exit();
 });
