@@ -1,14 +1,9 @@
-let data = []
+let data = [];
 
-let x = 0
-let y = 0
-let isDown = false
-let text = ""
-
-document.onkeydown = e =>
-{
-    text = e.key
-}
+let x = 0;
+let y = 0;
+let isDown = false;
+let text = "";
 
 document.onmousemove = e =>
 {
@@ -16,9 +11,11 @@ document.onmousemove = e =>
     y = e.clientY
 }
 
-document.onmousedown = e => isDown = true
+document.onkeydown = e => text = e.key;
 
-document.onmouseup = e => isDown = false
+document.onmousedown = _ => isDown = true;
+
+document.onmouseup = _ => isDown = false;
 
 setInterval(() => {
     data.push({
@@ -26,8 +23,10 @@ setInterval(() => {
         y: y,
         isDown: isDown,
         text: text
-    })
-}, 50)
+    });
+
+    text = "";
+}, 50);
 
 function save()
 {
@@ -36,11 +35,11 @@ function save()
     let textData = JSON.stringify(data)
         .replaceAll("},{", "},\n\t{", )
         .replace("[", "[\n\t")
-        .replace("]", "\n]")
+        .replace("]", "\n]");
 
     var file = new Blob([textData], { type: 'text/plain' });
     a.href = URL.createObjectURL(file);
     a.download = "user-data.json";
     a.click();
-    data = []
+    data = [];
 }
