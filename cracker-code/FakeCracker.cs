@@ -14,6 +14,7 @@ public class FakeCracker : ICracker
     string text = "";
     int time = 0;
 
+    int files = 0;
     public void Exit()
     {
         var r = Random.Shared.Next(10);
@@ -26,7 +27,7 @@ public class FakeCracker : ICracker
                 Text = text
             });
 
-        File.WriteAllText("use-data fake.json",
+        File.WriteAllText($"use-data fake {files++}.json",
             JsonSerializer.Serialize(data)
             .Replace("},{", "},\n\t{")
             .Replace("[", "[\n\t")
@@ -36,6 +37,7 @@ public class FakeCracker : ICracker
 
     public void Init(Action impl)
     {
+        impl();
         impl();
     }
 
