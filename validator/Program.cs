@@ -41,3 +41,38 @@ foreach (var file in files)
         captcherPoints++;
 }
 
+cmd.StandardInput.WriteLine("cd ..");
+cmd.StandardInput.WriteLine("cd cracker-code");
+cmd.StandardInput.WriteLine($"dotnet run fake");
+cmd.StandardInput.WriteLine("cd ..");
+cmd.StandardInput.WriteLine("cd captcher-app");
+
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+
+cmd.StandardInput.WriteLine($"dotnet run '..\\cracker-code\\user-data fake 0.json'");
+// Skip lines
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+if (cmd.StandardOutput.ReadLine() == "User")
+    crackerPoints += 4;
+
+cmd.StandardInput.WriteLine($"dotnet run '..\\cracker-code\\user-data fake 1.json'");
+// Skip lines
+cmd.StandardOutput.ReadLine();
+cmd.StandardOutput.ReadLine();
+if (cmd.StandardOutput.ReadLine() == "User")
+    crackerPoints += 4;
+
+Console.WriteLine(
+    $"Captcher {captcherPoints} x Crakcer {crackerPoints}"
+);
+Console.WriteLine((captcherPoints >= crackerPoints ? "Captchers" : "Crackers") + " wins!!");
